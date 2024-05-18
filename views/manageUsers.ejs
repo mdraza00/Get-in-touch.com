@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle: 'Chat'}) %>
+  </head>
+  <body>
+    <%- include('partials/topNav.ejs',{firstName,lastName}); %>
+    <section class="section-hero">
+      <section class="section-navigation">
+        <%- include('partials/sideNav.ejs'); %>
+      </section>
+      <section class="section-manage-users">
+        <div class="flex-center users-container">
+          <% users.forEach(user=>{%>
+          <div class="flex-center user-box">
+            <div class="flex-center user-info">
+              <img
+                class="user-profile-photo"
+                src="/userProfileImages/<%- user.profilePhoto %>"
+              />
+              <label class="font user-name"
+                ><%- user.firstName %> <%- user.lastName %></label
+              >
+            </div>
+            <form
+              class="flex-center user-account-options"
+              method="post"
+              action="/admin/manage-users"
+            >
+              <button
+                class="btn btn-activate-user"
+                type="submit"
+                name="activate"
+                value="<%- user.email %>"
+              >
+                enable
+              </button>
+              <button
+                class="btn btn-deactivate-user"
+                type="submit"
+                name="deActivate"
+                value="<%- user.email %>"
+              >
+                disable
+              </button>
+              <button
+                class="btn btn-delete-user"
+                type="submit"
+                name="deleteUser"
+                value="<%- user.email %>"
+              >
+                delete
+              </button>
+            </form>
+          </div>
+          <% });%>
+        </div>
+      </section>
+    </section>
+    <script>
+      document.querySelectorAll(".btn-activate-user").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          alert("user account has been activated");
+        });
+      });
+      document.querySelectorAll(".btn-deactivate-user").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          alert("user account has been de-activated");
+        });
+      });
+      document.querySelectorAll(".btn-delete-user").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          alert("user account has been deleted");
+        });
+      });
+    </script>
+  </body>
+</html>

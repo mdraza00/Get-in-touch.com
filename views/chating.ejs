@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle: 'Chat'}) %>
+  </head>
+  <body>
+    <%- include('partials/topNav.ejs',{firstName,lastName}); %>
+    <section class="section-hero">
+      <section class="section-navigation">
+        <%- include('partials/sideNav.ejs'); %>
+      </section>
+      <section class="section-freinds">
+        <div class="friends-container">
+          <% friends.forEach(friend=>{%>
+          <div class="flex-center friend-box">
+            <img
+              class="friend-DP"
+              src="/userProfileImages/<%- friend.profilePhoto %>"
+            />
+            <span class="font"><%- friend.name %></span>
+          </div>
+          <% });%>
+        </div>
+      </section>
+      <section class="section-chat">
+        <div id="msgContainer" class="messages-container"></div>
+        <div class="message-form-container">
+          <form class="flex-center message-input-container">
+            <input class="message-input-box" type="text" autofocus />
+            <button class="btn btn-send-file" type="button">
+              <i class="fa-regular fa-file"></i>
+            </button>
+            <button class="btn-send-msg" type="submit">send</button>
+          </form>
+        </div>
+      </section>
+    </section>
+    <script>
+      "use strict";
+      const socket = io();
+      // button to send file
+      const sendFileButton = document.querySelector(".btn-send-file");
+
+      const formMessageInput = document.querySelector(
+        ".message-input-container"
+      );
+
+      sendFileButton.addEventListener("click", () => {
+        const inputSendFile = document.createElement("input");
+        inputSendFile.setAttribute("type", "file");
+        inputSendFile.classList.add("hide");
+        inputSendFile.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+          })
+        );
+        inputSendFile.addEventListener("change", (e) => {
+          const file = inputSendFile.files[0];
+          // adding display message to user who is sending the file
+          const msgDiv = document.createElement("div");
+          msgDiv.classList.add("message-box", "send");
+          msgDiv.innerHTML = `<p class="message">File - ${
+            file.name
+          } <br/> FileSize - ${Math.trunc(file.size / 1024)} KB</p>`;
+          document.getElementById("msgContainer").appendChild(msgDiv);
+
+          const fileData = {
+            name: file.name,
+            size: file.size,
+            sender: `<%- firstName %> <%- lastName %>`,
+            file: file,
+          };
+
+          socket.emit("message-with-file", fileData);
+        });
+      });
+
+      // receiving file
+      socket.on("share-message-with-data", (data) => {
+        // displaying file information to user
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message-box", "receive");
+        msgDiv.innerHTML = `<p class="message">${data.sender}:<br/>File - ${
+          data.name
+        } <br/> FileSize - ${Math.trunc(data.size / 1024)} KB`;
+        document.getElementById("msgContainer").appendChild(msgDiv);
+
+        // downloading shared file
+        const url = URL.createObjectURL(new Blob([data.file]));
+        const downloadLink = document.createElement("a");
+        downloadLink.setAttribute("download", data.name);
+        downloadLink.setAttribute("href", url);
+        downloadLink.click();
+      });
+
+      // **** Input Message **** //
+      formMessageInput.addEventListener("submit", (e) => {
+        // **** preventing from reload **** //
+        e.preventDefault();
+        // **** taking value **** //
+        const text = inputMessage.value;
+        if (text !== "" && text)
+          socket.emit("message", `<%- firstName %> <%- lastName %>: ${text}`);
+
+        if (text !== "" && text) {
+          // **** creating message **** //
+          const msgDiv = document.createElement("div");
+          msgDiv.classList.add("message-box", "send");
+          msgDiv.innerHTML = `<p class="message">${text}</p>`;
+          // **** sending message **** //
+          msgContainer.append(msgDiv);
+        }
+
+        // **** resetting input box **** //
+        inputMessage.value = "";
+        inputMessage.focus();
+      });
+
+      // **** Handling messages from io **** //
+      socket.on("message-receive", (msg) => {
+        // **** selecting message container where the messages will be displayed **** //
+        const msgContainer = document.getElementById("msgContainer");
+
+        // **** auto scroll to the last message **** //
+        msgContainer.scrollTo(0, msgContainer.scrollHeight);
+
+        // **** creating message **** //
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message-box", "receive");
+        msgDiv.innerHTML = `<p class="message">${msg}</p>`;
+
+        // **** sending message **** //
+        msgContainer.appendChild(msgDiv);
+      });
+    </script>
+  </body>
+</html>

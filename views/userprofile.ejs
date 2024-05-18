@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle: 'My profile'}); %>
+  </head>
+  <body class="body-bg user-profile-body">
+    <%- include('partials/topNav.ejs',{firstName,lastName,profilePhoto}) %>
+    <section class="section-profile-container">
+      <div class="section-heading-container">
+        <p class="section-heading">Personal-details</p>
+      </div>
+      <section class="flex-center section-personal-details">
+        <div class="flex-center profile-picture-box">
+          <img
+            class="profile-picture"
+            src="/userProfileImages/<%= profilePhoto %>"
+          />
+          <button class="btn btn-change-profile">Change Profile</button>
+        </div>
+        <div class="personal-info-container">
+          <div class="flex-center personal-info-div">
+            <div class="flex-center personal-info-box user-name-box">
+              <label class="font" for="firstName">First Name :</label>
+              <form
+                class="flex-center form-box"
+                action="/my-profile"
+                method="post"
+              >
+                <input
+                  name="firstName"
+                  type="text"
+                  value="<%= `${firstName}` %>"
+                  class="input-change profile-name"
+                />
+                <button class="change-user-name btn-change" type="submit">
+                  Change
+                </button>
+              </form>
+            </div>
+            <div class="flex-center personal-info-box user-name-box">
+              <label class="font" for="lastName">Last Name :</label>
+              <form
+                class="flex-center form-box"
+                action="/my-profile"
+                method="post"
+              >
+                <input
+                  name="lastName"
+                  type="text"
+                  value="<%= `${lastName}` %>"
+                  class="input-change profile-name"
+                />
+                <button class="change-user-name btn-change" type="submit">
+                  Change
+                </button>
+              </form>
+            </div>
+            <div class="flex-center personal-info-box user-email-box">
+              <label class="font" for="email">User email :</label>
+              <form
+                class="flex-center form-box"
+                action="/my-profile"
+                method="post"
+              >
+                <input
+                  name="email"
+                  type="email"
+                  value="<%= email %>"
+                  class="input-change profile-email"
+                />
+                <button class="change-user-email btn-change" type="submit">
+                  Change
+                </button>
+              </form>
+            </div>
+            <div class="flex-center personal-info-box user-DOB">
+              <label class="font" for="dob">DOB :</label>
+              <form
+                class="flex-center form-box"
+                action="/my-profile"
+                method="post"
+              >
+                <input
+                  name="dob"
+                  type="date"
+                  value="<%= dob %>"
+                  class="input-change profile-DOB"
+                />
+                <button class="change-user-DOB btn-change" type="submit">
+                  Change
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="section-heading-container">
+        <p class="section-heading">Options</p>
+      </div>
+      <section class="flex-center section-options">
+        <form
+          action="/my-profile/reset-password"
+          method="post"
+          class="flex-center user-password-option-container"
+        >
+          <label class="font">Change password</label>
+          <input
+            class="input-change user-confirm-password"
+            type="password"
+            name="previousPassword"
+            placeholder="confirm password"
+          />
+          <input
+            class="input-change user-new-password"
+            type="password"
+            name="newPassword"
+            placeholder="new password"
+          />
+          <button class="btn-change" type="submit">change password</button>
+        </form>
+        <div class="flex-center account-option-container">
+          <label class="font">account settings</label>
+          <form action="/my-profile/disable-account" method="post">
+            <button type="submit" class="btn-change btn-disable-account">
+              Disable Account
+            </button>
+          </form>
+          <form action="/my-profile/delete-account" method="post">
+            <button type="submit" class="btn-change btn-delete-account">
+              Delete Account
+            </button>
+          </form>
+        </div>
+      </section>
+    </section>
+    <script>
+      const btnChangeProfile = document.querySelector(".btn-change-profile");
+      // Change User Profile
+      btnChangeProfile.addEventListener("click", () => {
+        const form = document.createElement("form");
+        const inputFile = document.createElement("input");
+        const inputSubmit = document.createElement("input");
+        // Creating click event
+        const click = new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        });
+
+        // setting form attributes
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/my-profile/photo");
+        form.setAttribute("enctype", "multipart/form-data");
+
+        // setting input attributes
+        inputFile.setAttribute("type", "file");
+        inputFile.setAttribute("name", "user-profile-photo");
+        inputFile.classList.add("btn");
+
+        // setting submit input attributes
+        inputSubmit.setAttribute("type", "submit");
+
+        // adding elements in the form
+        form.appendChild(inputFile);
+
+        // adding form to the body
+        document.body.appendChild(form);
+        // adding click event on the submit button;
+        inputFile.dispatchEvent(click);
+        inputFile.onchange = () => form.submit();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<header class="header-navigation">
+  <nav class="flex-center navigation-bar">
+    <div class="flex-center nav-info-box">
+      <a href="/">
+        <img
+          class="img-nav-logo"
+          src="/get in touch.jpeg"
+          alt="get in touch logo"
+        />
+      </a>
+      <p class="font nav-title">Get In Touch</p>
+    </div>
+    <div class="nav-options">
+      <button class="btn btn-logout">log out</button>
+      <button class="btn btn-add-post">
+        <i class="fa-solid fa-plus"></i> Add Post
+      </button>
+      <a class="link-top-profile" href="/my-profile">
+        <img
+          class="nav-dp"
+          src="/userProfileImages/<%= profilePhoto %>"
+          alt="user profile photo"
+        />
+      </a>
+      <p class="font nav-greetings">
+        Hello!<br />
+        <%= `${firstName} ${lastName}` %>
+      </p>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle: 'Register'}); %>
+  </head>
+  <body class="body-bg sign-up-body flex-center">
+    <div class="flex-center input-container input-container-register">
+      <div class="flex-center info-box">
+        <img class="img-logo" src="get in touch.jpeg" />
+        <p class="font form-log-in">register</p>
+      </div>
+      <form
+        class="flex-center form form-signup"
+        method="post"
+        action="/register"
+      >
+        <div class="flex-center input-box">
+          <input class="font input" type="text" name="firstName" required />
+          <label class="font label" for="firstName">first name</label>
+        </div>
+        <div class="flex-center input-box">
+          <input class="font input" type="text" name="lastName" required />
+          <label class="font label" for="lastName">last name</label>
+        </div>
+        <div class="flex-center input-box">
+          <input class="font input" type="email" name="email" required />
+          <label class="font label" for="email">email</label>
+        </div>
+        <div class="flex-center input-box">
+          <input
+            class="font input input-password"
+            type="password"
+            name="password"
+            required
+          />
+          <label class="font label" for="password">password</label>
+        </div>
+        <div class="flex-center input-box">
+          <input
+            class="font input confirmPassword input-confirm-password"
+            type="password"
+            name="passwordConfirm"
+            required
+          />
+          <label class="font label" for="password-confirm"
+            >confirm password</label
+          >
+        </div>
+        <div class="flex-center input-box input-box-DOB">
+          <label class="font label-dob" for="dob">Date Of Birth</label>
+          <input class="font input" type="date" name="dob" required />
+        </div>
+        <div class="flex-center input-box input-box-gender">
+          <label class="font" for="gender">Gender</label>
+          <div class="input-gender">
+            <input
+              class="font"
+              type="radio"
+              name="gender"
+              value="male"
+              required
+            />
+            <span class="font">male</span>
+            <input
+              class="font"
+              type="radio"
+              name="gender"
+              value="female"
+              required
+            />
+            <span class="font">female</span>
+          </div>
+        </div>
+        <div class="flex-center input-box-submit">
+          <input class="font input btn-register" type="submit" />
+        </div>
+      </form>
+      <div class="existing-user-container">
+        <p class="font p-existing-user">
+          already have an account?
+          <a class="font link-login" href="/login">login</a>
+        </p>
+      </div>
+    </div>
+    <script>
+      if ("passwordNotMatch" === "<%= error %>")
+        alert("password and confirm password do not match");
+      else if ("userAlreadyExists" === "<%= error %>")
+        alert("User already exists");
+    </script>
+  </body>
+</html>

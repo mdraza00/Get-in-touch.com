@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle:'Homepage'}); %>
+  </head>
+  <body>
+    <%- include('partials/topNav.ejs',{firstName,lastName,profilePhoto}); %>
+    <section class="section-hero">
+      <section class="section-navigation">
+        <%- include('partials/sideNav.ejs',{profilePhoto}); %>
+      </section>
+      <section class="section-homepage">
+        <div class="flex-center posts-container">
+          <% posts.forEach(post=>{ %>
+          <div class="post-box">
+            <img class="post-img" src="/posts/<%=post.filename%>" />
+            <div class="post-info-box">
+              <p class="font post-sender">
+                Post By:- <%= `${post.firstName} ${post.lastName}` %>
+              </p>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

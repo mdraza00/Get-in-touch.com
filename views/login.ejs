@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle:'Log in'}); %>
+  </head>
+  <body class="flex-center login-body">
+    <div class="flex-center input-container input-container-login">
+      <div class="flex-center info-box">
+        <img class="img-logo" src="get in touch.jpeg" />
+        <p class="font form-log-in">log in</p>
+      </div>
+      <form
+        class="flex-center form font form-login"
+        action="/login"
+        method="post"
+      >
+        <div class="flex-center input-box">
+          <input
+            class="font input"
+            type="email"
+            name="email"
+            required
+            autofocus
+          />
+          <label class="font label" for="email">email</label>
+        </div>
+        <div class="flex-center input-box">
+          <input
+            class="font input"
+            type="password"
+            id="password"
+            name="password"
+            required
+          />
+          <label class="font label" for="password">password</label>
+        </div>
+        <div class="flex-center input-box-submit">
+          <input class="font input" type="submit" value="log in" />
+        </div>
+      </form>
+      <div class="new-user-container">
+        <p class="font p-new-user">
+          new to get in touch?
+          <a class="font link-new-user" href="/register">register</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

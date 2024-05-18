@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs',{pageTitle: "Friends"}) %>
+  </head>
+  <body>
+    <%- include('partials/topNav.ejs',{firstName,lastName}); %>
+    <section class="section-hero">
+      <section class="section-navigation">
+        <%- include('partials/sideNav.ejs'); %>
+      </section>
+      <section class="flex-center section-search-new-friends">
+        <div class="search-box-container">
+          <form class="flex-center">
+            <button class="btn-search-icon">
+              <i class="search-icon fa-solid fa-magnifying-glass"></i>
+            </button>
+            <input
+              class="input-search-box"
+              type="text"
+              name="searchedFriend"
+              placeholder="search name of the friend"
+            />
+          </form>
+        </div>
+        <div class="search-friends-container">
+          <% users.forEach(user=>{ %>
+          <div class="flex-center search-friend-box">
+            <img
+              class="search-friend-profile-photo"
+              src="/userProfileImages/<%= user.profilePhoto %>"
+            />
+            <p class="search-friend-profile-name">
+              <%= `${user.firstName} ${user.lastName}`%>
+            </p>
+            <div class="option-box">
+              <form action="/friends" method="post">
+                <button
+                  class="btn btn-send-friend-request"
+                  name="email"
+                  value="<%= user.email%>"
+                >
+                  Send Request
+                </button>
+              </form>
+            </div>
+          </div>
+          <% });%>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>
